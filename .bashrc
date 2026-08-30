@@ -17,5 +17,5 @@ alias com='sudo make clean install'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
-PS1='[\u@\h \W]\$ '
+PS1='\[\e[1;36m\]┌─[\u@\h]\[\e[0m\] \[\e[1;35m\]\w\[\e[0m\]\n\[\e[1;36m\]└─❯ \[\e[0m\]'
 fastfetch
