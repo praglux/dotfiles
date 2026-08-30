@@ -2,8 +2,14 @@
 
 ### Terminal
 
-![Desktop screenshot](screenshots/screenshot.png)
+![Terminal screenshot](screenshots/screenshot.png)
 
 ### Dmenu
 
-![Terminal screenshot](screenshots/screenshot1.png)
+![Dmenu screenshot](screenshots/screenshot3.png)
+
+### surf
+
+![surf screenshot](screenshots/screenshot1.png)
+
+
