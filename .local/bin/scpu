@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+icon=""
+var=$(top -bn1 | awk '/Cpu\(s\)/ {printf "%.0f%%", 100 - $8}')
+
+echo "$icon $var"

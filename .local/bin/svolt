@@ -1,0 +1,6 @@
+#!/bin/bash
+
+var=$(awk '{printf "%.2fV", $1 / 1000000}' /sys/class/power_supply/BAT0/voltage_now)
+icon="󱐋"
+
+echo "$icon $var"

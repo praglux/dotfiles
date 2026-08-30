@@ -1,0 +1,5 @@
+#!/bin/bash
+
+icon=""
+var=$(free -h | awk '/Mem:/ {print $3}')
+echo "$icon $var"

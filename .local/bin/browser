@@ -1,0 +1,17 @@
+#!/bin/sh
+
+BOOKMARKS="$HOME/.cache/bookmarks"
+
+choice=$(cut -d'|' -f1 "$BOOKMARKS" | dmenu -i -p "Browser:")
+
+[ -z "$choice" ] && exit
+
+url=$(grep "^$choice|" "$BOOKMARKS" | cut -d'|' -f2)
+
+if [ -n "$url" ]; then
+    surf "$url"
+elif echo "$choice" | grep -q "^https\\?://"; then
+    surf "$choice"
+else
+    surf "https://$choice"
+fi

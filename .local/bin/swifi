@@ -1,0 +1,13 @@
+#!/bin/bash
+
+var=$(iw dev "$(iw dev | awk '$1=="Interface"{print $2; exit}')" link |
+      awk '/tx bitrate:/ {printf "%.1f MB/s", $3 / 8}')
+
+icon="󰖩"
+
+if [ -n "$var" ]; then
+    echo "$icon $var"
+else
+    echo "󰖪 Offline"
+fi
+
