@@ -1,0 +1,10 @@
+#!/bin/bash
+
+var=$(cat /sys/class/power_supply/BAT0/capacity)
+
+icons=( "󰂎" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" )
+
+icon="${icons[var / 10]}"
+
+echo "$icon $var%"
+

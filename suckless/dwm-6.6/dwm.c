@@ -1048,11 +1048,14 @@ manage(Window w, XWindowAttributes *wa)
 
 	updatetitle(c);
 	if (XGetTransientForHint(dpy, w, &trans) && (t = wintoclient(trans))) {
-		c->mon = t->mon;
-		c->tags = t->tags;
+ 	   c->mon = t->mon;
+ 	   c->tags = t->tags;
 	} else {
-		c->mon = selmon;
-		applyrules(c);
+ 	   c->mon = selmon;
+ 	   applyrules(c);
+
+ 	   if (c->tags != c->mon->tagset[c->mon->seltags])
+    	    view(&(Arg){ .ui = c->tags });
 	}
 
 	if (c->x + WIDTH(c) > c->mon->wx + c->mon->ww)

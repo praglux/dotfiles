@@ -23,16 +23,19 @@ static const char *colors[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "", "󰉋", "󰈹", "󰎆", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class      			 instance    title       tags mask     isfloating   monitor */
+	{ "Gimp",      			NULL,       NULL,       0,            1,           -1 },
+	{ "st",       			NULL,       NULL,       1 << 0,       0,           -1 },
+	{ "kitty", 			"yazi",     NULL, 	1 << 1,       0,           -1 },
+	{ "firefox",   			NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "youtube-music-desktop-app",  NULL, 	    NULL,       1 << 3,       0,           -1 },
 };
 
 /* layout(s) */
@@ -67,11 +70,15 @@ static const char *dmenucmd[] = {
 	NULL
 };
 static const char *termcmd[]  = { "st", NULL };
+static const char *firefox[] = { "firefox", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,   			XK_f, 	   spawn, 	   {.v = firefox} },
+	{ MODKEY, 			XK_m,	   spawn,	   SHCMD("youtube-music-desktop-app") },
+	{ MODKEY, 			XK_t,	   spawn,	   SHCMD("yazi-kitty") },
 	{ MODKEY,                       XK_space,  spawn,          SHCMD("browser") },	
 	{ MODKEY,                       XK_w,      spawn,          SHCMD("change-wallpaper.sh") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
@@ -85,8 +92,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_s,      setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -107,15 +114,6 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ 0, 				XK_F1,     spawn,          SHCMD("playerctl previous") },
-	{ 0, 				XK_F2,     spawn,          SHCMD("playerctl next") },
-	{ 0, 				XK_F3,     spawn, 	   SHCMD("xdotool key ctrl+r") },
-	{ 0, 				XK_F4,     spawn, 	   SHCMD("xdotool key F11") },
-	{ 0, 				XK_F6,     spawn, 	   SHCMD("brightnessctl set 10%-") },
-	{ 0, 				XK_F7,     spawn, 	   SHCMD("brightnessctl set 10%+") },
-	{ 0, 				XK_F8,     spawn, 	   SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle") },
-	{ 0, 				XK_F9,     spawn, 	   SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%") },
-	{ 0, 				XK_F10,    spawn, 	   SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%") },
 	{ MODKEY|ShiftMask,             XK_c,      quit,           {0} },
 };
 

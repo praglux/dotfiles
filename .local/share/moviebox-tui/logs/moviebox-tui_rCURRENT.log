@@ -1,0 +1,5 @@
+[2026-09-21 22:58:02.337697 +05:45] INFO [src/logging.rs:49] session started | moviebox-tui 0.1.23 | linux | log file: ~/.local/share/moviebox-tui/logs/moviebox-tui_rCURRENT.log
+[2026-09-22 02:53:16.341129 +05:45] ERROR [src/main.rs:120] panic: panicked at library/std/src/io/stdio.rs:1165:9:
+failed printing to stderr: I/O error (os error 5)
+backtrace:
+disabled backtrace
