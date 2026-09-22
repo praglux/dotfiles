@@ -33,7 +33,7 @@ static const Rule rules[] = {
 	/* class      			 instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",      			NULL,       NULL,       0,            1,           -1 },
 	{ "st",       			NULL,       NULL,       1 << 0,       0,           -1 },
-	{ "kitty", 			"yazi",     NULL, 	1 << 1,       0,           -1 },
+	{ "kitty", 		    	"yazi",     NULL, 	1 << 1,       0,           -1 },
 	{ "firefox",   			NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "youtube-music-desktop-app",  NULL, 	    NULL,       1 << 3,       0,           -1 },
 };
@@ -78,7 +78,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,   			XK_f, 	   spawn, 	   {.v = firefox} },
 	{ MODKEY, 			XK_m,	   spawn,	   SHCMD("youtube-music-desktop-app") },
-	{ MODKEY, 			XK_t,	   spawn,	   SHCMD("yazi-kitty") },
+	{ MODKEY, 			XK_o,	   spawn,	   SHCMD("yazi-kitty") },
 	{ MODKEY,                       XK_space,  spawn,          SHCMD("browser") },	
 	{ MODKEY,                       XK_w,      spawn,          SHCMD("change-wallpaper.sh") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
