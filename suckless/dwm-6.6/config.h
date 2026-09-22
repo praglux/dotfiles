@@ -78,9 +78,14 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,   			XK_f, 	   spawn, 	   {.v = firefox} },
 	{ MODKEY, 			XK_m,	   spawn,	   SHCMD("youtube-music-desktop-app") },
+<<<<<<< HEAD
 	{ MODKEY, 			XK_o,	   spawn,	   SHCMD("yazi-kitty") },
+=======
+	{ MODKEY, 			XK_u,	   spawn,	   SHCMD("yazi-kitty") },
+>>>>>>> 341f8f4 (update complete dotfiles)
 	{ MODKEY,                       XK_space,  spawn,          SHCMD("browser") },	
 	{ MODKEY,                       XK_w,      spawn,          SHCMD("change-wallpaper.sh") },
+	{ 0,                            XK_Print,  spawn,          SHCMD("scrot -s ~/Pictures/screenshots/%Y-%m-%d_%H-%M-%S.png") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
