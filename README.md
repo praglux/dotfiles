@@ -5,9 +5,9 @@
 
 ![Terminal screenshot](screenshots/terminal.png)
 
-### dmenu-bar
+### dwm-bar
 
-![Terminal screenshot](screenshots/dmenu_bar.png.png)
+![DWM_bar Screenshot](screenshots/dwm_bar.png)
 
 ### Dmenu
 
