@@ -1,15 +1,17 @@
 ## Screenshots
 
+
 ### Terminal
 
-![Terminal screenshot](screenshots/screenshot.png)
+![Terminal screenshot](screenshots/terminal.png)
+
+### dmenu-bar
+
+![Terminal screenshot](screenshots/dmenu_bar.png.png)
 
 ### Dmenu
 
-![Dmenu screenshot](screenshots/screenshot3.png)
+![Dmenu screenshot](screenshots/dmenu.png)
 
-### surf
-
-![surf screenshot](screenshots/screenshot1.png)
 
 
