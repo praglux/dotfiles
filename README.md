@@ -14,16 +14,10 @@
 ![Dmenu screenshot](screenshots/dmenu.png)
 
 
-Installation
-
-Clone the repository and run the installation script:
-
+## Installation
+```bash
 git clone https://github.com/praglux/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 chmod +x install.sh
 ./install.sh
-
-
-The installer will set up the dotfiles and configure the environment.
-
-
+```
