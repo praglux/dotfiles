@@ -23,19 +23,20 @@ static const char *colors[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "󰉋", "󰈹", "󰎆", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "", "󰉋", "󰈹", "󰎆", "󰎁", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      			 instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",      			NULL,       NULL,       0,            1,           -1 },
-	{ "st",       			NULL,       NULL,       1 << 0,       0,           -1 },
-	{ "kitty", 		    	"yazi",     NULL, 	1 << 1,       0,           -1 },
-	{ "firefox",   			NULL,       NULL,       1 << 2,       0,           -1 },
-	{ "youtube-music-desktop-app",  NULL, 	    NULL,       1 << 3,       0,           -1 },
+	/* class      			instance    	   title       tags mask     isfloating   monitor */
+	{ "Gimp",      			NULL,       	   NULL,       0,            1,           -1 },
+	{ "st",       			NULL,       	   NULL,       1 << 0,       0,           -1 },
+	{ "kitty", 			"yazi",     	   NULL,       1 << 1,       0,           -1 },
+	{ "firefox",   			NULL,       	   NULL,       1 << 2,       0,           -1 },
+	{ "youtube-music-desktop-app",  NULL, 	    	   NULL,       1 << 3,       0,           -1 },
+	{ "kitty-moviebox", 		NULL,		   NULL,       1 << 4,	     0, 	  -1 },
 };
 
 /* layout(s) */
@@ -77,12 +78,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,   			XK_f, 	   spawn, 	   {.v = firefox} },
-	{ MODKEY, 			XK_m,	   spawn,	   SHCMD("youtube-music-desktop-app") },
-<<<<<<< HEAD
-	{ MODKEY, 			XK_o,	   spawn,	   SHCMD("yazi-kitty") },
-=======
-	{ MODKEY, 			XK_u,	   spawn,	   SHCMD("yazi-kitty") },
->>>>>>> 341f8f4 (update complete dotfiles)
+	{ MODKEY, 			XK_y,	   spawn,	   SHCMD("youtube-music-desktop-app") },
+	{ MODKEY, 			XK_t,	   spawn,	   SHCMD("yazi-kitty") },
+	{ MODKEY, 			XK_m,	   spawn,	   SHCMD("movie") },
 	{ MODKEY,                       XK_space,  spawn,          SHCMD("browser") },	
 	{ MODKEY,                       XK_w,      spawn,          SHCMD("change-wallpaper.sh") },
 	{ 0,                            XK_Print,  spawn,          SHCMD("scrot -s ~/Pictures/screenshots/%Y-%m-%d_%H-%M-%S.png") },
@@ -96,9 +94,9 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_s,      setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
