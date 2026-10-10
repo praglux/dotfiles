@@ -30,6 +30,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <time.h>
 #include <X11/cursorfont.h>
 #include <X11/keysym.h>
 #include <X11/Xatom.h>
@@ -116,6 +117,7 @@ struct Monitor {
 	int nmaster;
 	int num;
 	int by;               /* bar geometry */
+	int bx, bw;           /* floating bar x/width */
 	int mx, my, mw, mh;   /* screen size */
 	int wx, wy, ww, wh;   /* window area  */
 	int gappx;            /* gaps between windows */
@@ -442,7 +444,7 @@ buttonpress(XEvent *e)
 			arg.ui = 1 << i;
 		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
 			click = ClkLtSymbol;
-		else if (ev->x > selmon->ww - (int)TEXTW(stext))
+		else if (ev->x > selmon->bw - (int)TEXTW(stext))
 			click = ClkStatusText;
 		else
 			click = ClkWinTitle;
@@ -571,7 +573,7 @@ configurenotify(XEvent *e)
 				for (c = m->clients; c; c = c->next)
 					if (c->isfullscreen)
 						resizeclient(c, m->mx, m->my, m->mw, m->mh);
-				XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, m->ww, bh);
+				XMoveResizeWindow(dpy, m->barwin, m->bx, m->by, m->bw, bh);
 			}
 			focus(NULL);
 			arrange(NULL);
@@ -700,54 +702,79 @@ dirtomon(int dir)
 void
 drawbar(Monitor *m)
 {
-	int x, w, tw = 0;
+	int x, w, tw = 0, cw = 0;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
+	char clocktext[32];
+	time_t now;
+	struct tm tm;
 
 	if (!m->showbar)
 		return;
 
-	/* draw status first so it can be overdrawn by tags later */
-	if (m == selmon) { /* status is only drawn on selected monitor */
-		drw_setscheme(drw, scheme[SchemeNorm]);
-		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
-	}
+	/* Clear the entire bar first. This removes the old window-title text. */
+	drw_setscheme(drw, scheme[SchemeNorm]);
+	drw_rect(drw, 0, 0, m->bw, bh, 1, 1);
 
+	/* Find occupied/urgent tags. */
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags;
 		if (c->isurgent)
 			urg |= c->tags;
 	}
+
+	/* LEFT: tags */
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
-		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+		drw_setscheme(drw,
+			scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
+
 		if (occ & 1 << i)
 			drw_rect(drw, x + boxs, boxs, boxw, boxw,
 				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
 				urg & 1 << i);
 		x += w;
 	}
+
+	/* Layout symbol stays beside the tags. */
 	w = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
-	if ((w = m->ww - tw - x) > bh) {
-		if (m->sel) {
-			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
-			if (m->sel->isfloating)
-				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
-		} else {
+	/* RIGHT: status text (CPU/RAM/etc.) */
+	if (m == selmon) {
+		tw = TEXTW(stext) - lrpad + 2;
+		if (tw < 1)
+			tw = 1;
+		drw_setscheme(drw, scheme[SchemeNorm]);
+		drw_text(drw, m->bw - tw, 0, tw, bh, 0, stext, 0);
+	}
+
+	/* CENTER: clock. No window title is drawn here. */
+	now = time(NULL);
+	localtime_r(&now, &tm);
+	strftime(clocktext, sizeof(clocktext), "%H:%M", &tm);
+
+	cw = TEXTW(clocktext) - lrpad;
+	if (cw < 1)
+		cw = 1;
+
+	/* Keep the clock in the true center, while avoiding the status area. */
+	{
+		int centerx = (m->bw - cw) / 2;
+		int right_limit = m->bw - tw;
+
+		if (centerx >= x && centerx + cw <= right_limit) {
 			drw_setscheme(drw, scheme[SchemeNorm]);
-			drw_rect(drw, x, 0, w, bh, 1, 1);
+			drw_text(drw, centerx, 0, cw, bh, 0, clocktext, 0);
 		}
 	}
-	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
+
+	drw_map(drw, m->barwin, 0, 0, m->bw, bh);
 }
 
 void
@@ -1732,7 +1759,7 @@ togglebar(const Arg *arg)
 {
 	selmon->showbar = !selmon->showbar;
 	updatebarpos(selmon);
-	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
+	XMoveResizeWindow(dpy, selmon->barwin, selmon->bx, selmon->by, selmon->bw, bh);
 	arrange(selmon);
 }
 
@@ -1840,10 +1867,11 @@ updatebars(void)
 		.event_mask = ButtonPressMask|ExposureMask
 	};
 	XClassHint ch = {"dwm", "dwm"};
+
 	for (m = mons; m; m = m->next) {
 		if (m->barwin)
 			continue;
-		m->barwin = XCreateWindow(dpy, root, m->wx, m->by, m->ww, bh, 0, DefaultDepth(dpy, screen),
+		m->barwin = XCreateWindow(dpy, root, m->bx, m->by, m->bw, bh, 0, DefaultDepth(dpy, screen),
 				CopyFromParent, DefaultVisual(dpy, screen),
 				CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
 		XDefineCursor(dpy, m->barwin, cursor[CurNormal]->cursor);
@@ -1855,14 +1883,23 @@ updatebars(void)
 void
 updatebarpos(Monitor *m)
 {
+	const int bar_margin = 12;
+	const int bar_top = 8;
+
 	m->wy = m->my;
 	m->wh = m->mh;
+
 	if (m->showbar) {
-		m->wh -= bh;
-		m->by = m->topbar ? m->wy : m->wy + m->wh;
-		m->wy = m->topbar ? m->wy + bh : m->wy;
-	} else
+		m->bx = m->mx + bar_margin;
+		m->bw = MAX(bh, m->mw - 2 * bar_margin);
+		m->by = m->my + bar_top;
+		m->wh -= bh + bar_top;
+		m->wy += bh + bar_top;
+	} else {
+		m->bx = m->mx;
+		m->bw = m->mw;
 		m->by = -bh;
+	}
 }
 
 void
