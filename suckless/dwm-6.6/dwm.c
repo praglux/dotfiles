@@ -757,7 +757,7 @@ drawbar(Monitor *m)
 	/* CENTER: clock. No window title is drawn here. */
 	now = time(NULL);
 	localtime_r(&now, &tm);
-	strftime(clocktext, sizeof(clocktext), "%H:%M", &tm);
+	strftime(clocktext, sizeof(clocktext), "%H:%M %B %d", &tm);
 
 	cw = TEXTW(clocktext) - lrpad;
 	if (cw < 1)
