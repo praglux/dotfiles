@@ -21,3 +21,8 @@ cd ~/dotfiles
 chmod +x install.sh
 ./install.sh
 ```
+## Package 
+  File Manager : yazi 
+  terminal     : kitty , st
+  Browser      : firefox 
+  package      : eza , picom , fastfetch 
